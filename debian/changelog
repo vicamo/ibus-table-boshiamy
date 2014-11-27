@@ -1,3 +1,11 @@
+ibus-table-boshiamy (1.5.9) sid; urgency=low
+
+  * update autconf/automake
+  * update debian/*
+  * build against ibus-table 1.5.9
+
+ -- You-Sheng Yang <vicamo@gmail.com>  Thu, 27 Nov 2014 14:08:21 +0800
+
 ibus-table-boshiamy (1.3.8.20101225-1) natty; urgency=low
 
   * build against libibus-dev 1.3.8
