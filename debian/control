@@ -2,9 +2,9 @@ Source: ibus-table-boshiamy
 Section: utils
 Priority: optional
 Maintainer: You-Sheng Yang <vicamo@gmail.com>
-Build-Depends: debhelper (>= 7)
+Build-Depends: debhelper (>= 9)
 Build-Depends-Indep: autotools-dev, ibus-table (>= 1.1.0), pkg-config
-Standards-Version: 3.8.2
+Standards-Version: 3.9.5
 Homepage: http://github.com/vicamo/ibus-table-boshiamy
 Vcs-Browser: http://github.com/vicamo/ibus-table-boshiamy/tree
 Vcs-Git: git://github.com/vicamo/ibus-table-boshiamy.git
