@@ -1,4 +1,0 @@
-# Compulsory line, this is a version 3 file
-version=3
-
-https://github.com/vicamo/ibus-table-boshiamy/releases ibus-table-boshiamy-([0-9].*)\.tar\.gz
