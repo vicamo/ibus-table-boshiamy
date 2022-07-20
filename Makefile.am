@@ -20,7 +20,6 @@
 
 SUBDIRS = \
 	icons \
-	m4 \
 	tables \
 	$(NULL)
 

@@ -51,7 +51,6 @@ AC_PATH_PROG([IBUS_TABLE_CREATEDB],[ibus-table-createdb],
 AC_CONFIG_FILES(Makefile
 icons/Makefile
 tables/Makefile
-m4/Makefile
 ibus-table-boshiamy.spec
 )
 
