@@ -34,6 +34,21 @@ noinst_DIST = \
 CLEANFILES = \
 	$(NULL)
 
+MAINTAINERCLEANFILES = \
+	$(GITIGNORE_MAINTAINERCLEANFILES_TOPLEVEL) \
+	$(GITIGNORE_MAINTAINERCLEANFILES_M4_LIBTOOL) \
+	$(GITIGNORE_MAINTAINERCLEANFILES_MAKEFILE_IN) \
+	$(srcdir)/INSTALL \
+	$(NULL)
+
+DISTCHECK_CONFIGURE_FLAGS = \
+	--disable-maintainer-mode \
+	$(NULL)
+
+GITIGNOREFILES = \
+	$(DIST_ARCHIVES) \
+	$(NULL)
+
 #DISTCLEANFILES = \
 #	po/stamp-it \
 #	$(NULL)
@@ -95,3 +110,5 @@ clean-rpm:
 	$(RM) -r "`uname -i`"
 
 clean-local: clean-rpm
+
+-include $(top_srcdir)/git.mk
