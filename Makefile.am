@@ -47,6 +47,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
 
 GITIGNOREFILES = \
 	$(DIST_ARCHIVES) \
+	AUTHORS \
 	ChangeLog \
 	$(NULL)
 
@@ -117,7 +118,7 @@ clean-local: clean-rpm
 
 distclean-local:
 	if test "$(srcdir)" = "."; then :; else \
-	  rm -f ChangeLog; \
+	  rm -f AUTHORS ChangeLog; \
 	fi
 
 .PHONY: ChangeLog
@@ -131,6 +132,24 @@ ChangeLog:
 	else \
 	  test -f $@ || \
 	  (echo A git checkout and git-log is required to generate ChangeLog >&2 && \
+	  echo A git checkout and git-log is required to generate this file >> $@); \
+	fi
+
+###########
+# AUTHORS
+
+.PHONY: AUTHORS
+AUTHORS:
+	$(AM_V_GEN) if test -d $(srcdir)/.git; then \
+	  out="`GIT_DIR=$(top_srcdir)/.git git log --pretty=format:'%aN <%aE>' | sort -u`" \
+	  && perl -p -e "s/#authorslist#// and print '$$out'" < $(srcdir)/$@.in > $@.tmp \
+	  && mv -f $@.tmp $@ \
+	  || ($(RM) $@.tmp; \
+	      echo Failed to generate AUTHORS, your AUTHORS may be outdated >&2; \
+	      (test -f $@ || echo git-log is required to generate this file >> $@)); \
+	else \
+	  test -f $@ || \
+	  (echo A git checkout and git-log is required to generate AUTHORS >&2 && \
 	  echo A git checkout and git-log is required to generate this file >> $@); \
 	fi
 
