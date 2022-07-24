@@ -18,10 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-SUBDIRS = \
-	icons \
-	tables \
-	$(NULL)
+SUBDIRS = .
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -34,10 +31,46 @@ EXTRA_DIST = \
 noinst_DIST = \
 	$(NULL)
 
+CLEANFILES = \
+	$(NULL)
 
 #DISTCLEANFILES = \
 #	po/stamp-it \
 #	$(NULL)
+
+##########
+# icons/
+
+icons_DATA = \
+	icons/boshiamy.png \
+	$(NULL)
+
+iconsdir = $(datadir)/ibus-table/icons
+
+EXTRA_DIST += \
+	icons/boshiamy.png \
+	$(NULL)
+
+##########
+# tables/
+
+tables_DATA = \
+	tables/boshiamy.db \
+	$(NULL)
+
+tablesdir = $(datadir)/ibus-table/tables
+
+EXTRA_DIST += \
+	tables/boshiamy.txt \
+	$(NULL)
+
+CLEANFILES += $(tables_DATA)
+
+.txt.db:
+	$(IBUS_TABLE_CREATEDB) -n $@ -s $<
+
+############
+# RPM builds
 
 rpm: dist @PACKAGE_NAME@.spec
 	rpmbuild -bb \
