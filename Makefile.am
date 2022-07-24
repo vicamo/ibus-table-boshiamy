@@ -67,6 +67,7 @@ EXTRA_DIST += \
 CLEANFILES += $(tables_DATA)
 
 .txt.db:
+	@$(MKDIR_P) "$(@D)"
 	$(IBUS_TABLE_CREATEDB) -n $@ -s $<
 
 ############
