@@ -20,17 +20,14 @@
 
 # if not 1, append datestamp to the version number.
 m4_define([package_name], [ibus-table-boshiamy])
-m4_define([ibus_released], [0])
-m4_define([ibus_major_version], [1])
-m4_define([ibus_minor_version], [3])
-m4_define([ibus_micro_version], [0])
-m4_define(ibus_maybe_datestamp,
-    m4_esyscmd([if test x]ibus_released[ != x1; then date +.%Y%m%d | tr -d '\n\r'; fi]))
+m4_define([itb_major_version], [1])
+m4_define([itb_minor_version], [6])
+m4_define([itb_micro_version], [0])
 
-m4_define([ibus_version],
-    ibus_major_version.ibus_minor_version.ibus_micro_version[]ibus_maybe_datestamp)
+m4_define([itb_version],
+    itb_major_version.itb_minor_version.itb_micro_version)
 
-AC_INIT([package_name], [ibus_version], [http://github.com/vicamo/ibus-table-boshiamy/issues], [package_name])
+AC_INIT([package_name], [itb_version], [http://github.com/vicamo/ibus-table-boshiamy/issues], [package_name])
 AM_INIT_AUTOMAKE([1.10])
 AM_MAINTAINER_MODE
 
