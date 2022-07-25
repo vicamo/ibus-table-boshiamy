@@ -138,6 +138,8 @@ ChangeLog:
 ###########
 # AUTHORS
 
+EXTRA_DIST += AUTHORS.in
+
 .PHONY: AUTHORS
 AUTHORS:
 	$(AM_V_GEN) if test -d $(srcdir)/.git; then \
