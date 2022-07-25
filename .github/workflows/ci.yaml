@@ -1,0 +1,87 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: 'Build package'
+    runs-on: ubuntu-latest
+    container:
+      image: 'buildpack-deps:unstable'
+      env:
+        DEBIAN_FRONTEND: noninteractive
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: 'Build'
+        shell: bash
+        run: |
+          apt-get update --quiet
+          apt-get install --yes --no-install-recommends \
+              autotools-dev \
+              build-essential \
+              ibus-table \
+              pkg-config \
+              ;
+
+          ./autogen.sh
+          make
+          make install
+          make distcheck
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: src-tarball
+          path: ibus-table-boshiamy-*.tar.*
+          retention-days: 7
+
+  pre-release:
+    name: "Pre Release"
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref_type == 'branch' }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download source tarball
+        uses: actions/download-artifact@v2
+        with:
+          name: src-tarball
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "nightly"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            ibus-table-boshiamy-*.tar.*
+
+  release:
+    name: "Release"
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download source tarball
+        uses: actions/download-artifact@v2
+        with:
+          name: src-tarball
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          title: ${{ format('Release {0}', github.ref_name) }}
+          files: |
+            ibus-table-boshiamy-*.tar.*

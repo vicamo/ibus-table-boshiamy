@@ -18,11 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-SUBDIRS = \
-	icons \
-	m4 \
-	tables \
-	$(NULL)
+SUBDIRS = .
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -35,10 +31,64 @@ EXTRA_DIST = \
 noinst_DIST = \
 	$(NULL)
 
+CLEANFILES = \
+	$(NULL)
+
+MAINTAINERCLEANFILES = \
+	$(GITIGNORE_MAINTAINERCLEANFILES_TOPLEVEL) \
+	$(GITIGNORE_MAINTAINERCLEANFILES_M4_LIBTOOL) \
+	$(GITIGNORE_MAINTAINERCLEANFILES_MAKEFILE_IN) \
+	$(srcdir)/INSTALL \
+	$(NULL)
+
+DISTCHECK_CONFIGURE_FLAGS = \
+	--disable-maintainer-mode \
+	$(NULL)
+
+GITIGNOREFILES = \
+	$(DIST_ARCHIVES) \
+	AUTHORS \
+	ChangeLog \
+	$(NULL)
 
 #DISTCLEANFILES = \
 #	po/stamp-it \
 #	$(NULL)
+
+##########
+# icons/
+
+icons_DATA = \
+	icons/boshiamy.png \
+	$(NULL)
+
+iconsdir = $(datadir)/ibus-table/icons
+
+EXTRA_DIST += \
+	icons/boshiamy.png \
+	$(NULL)
+
+##########
+# tables/
+
+tables_DATA = \
+	tables/boshiamy.db \
+	$(NULL)
+
+tablesdir = $(datadir)/ibus-table/tables
+
+EXTRA_DIST += \
+	tables/boshiamy.txt \
+	$(NULL)
+
+CLEANFILES += $(tables_DATA)
+
+.txt.db:
+	@$(MKDIR_P) "$(@D)"
+	$(IBUS_TABLE_CREATEDB) -n $@ -s $<
+
+############
+# RPM builds
 
 rpm: dist @PACKAGE_NAME@.spec
 	rpmbuild -bb \
@@ -62,3 +112,45 @@ clean-rpm:
 	$(RM) -r "`uname -i`"
 
 clean-local: clean-rpm
+
+###########
+# ChangeLog
+
+distclean-local:
+	if test "$(srcdir)" = "."; then :; else \
+	  rm -f AUTHORS ChangeLog; \
+	fi
+
+.PHONY: ChangeLog
+ChangeLog:
+	$(AM_V_GEN) if test -d "$(srcdir)/.git"; then \
+	  (GIT_DIR=$(top_srcdir)/.git $(top_builddir)/missing git log --stat) | fmt --split-only > $@.tmp \
+	  && mv -f $@.tmp $@ \
+	  || ($(RM) $@.tmp; \
+	      echo Failed to generate ChangeLog, your ChangeLog may be outdated >&2; \
+	      (test -f $@ || echo git-log is required to generate this file >> $@)); \
+	else \
+	  test -f $@ || \
+	  (echo A git checkout and git-log is required to generate ChangeLog >&2 && \
+	  echo A git checkout and git-log is required to generate this file >> $@); \
+	fi
+
+###########
+# AUTHORS
+
+.PHONY: AUTHORS
+AUTHORS:
+	$(AM_V_GEN) if test -d $(srcdir)/.git; then \
+	  out="`GIT_DIR=$(top_srcdir)/.git git log --pretty=format:'%aN <%aE>' | sort -u`" \
+	  && perl -p -e "s/#authorslist#// and print '$$out'" < $(srcdir)/$@.in > $@.tmp \
+	  && mv -f $@.tmp $@ \
+	  || ($(RM) $@.tmp; \
+	      echo Failed to generate AUTHORS, your AUTHORS may be outdated >&2; \
+	      (test -f $@ || echo git-log is required to generate this file >> $@)); \
+	else \
+	  test -f $@ || \
+	  (echo A git checkout and git-log is required to generate AUTHORS >&2 && \
+	  echo A git checkout and git-log is required to generate this file >> $@); \
+	fi
+
+-include $(top_srcdir)/git.mk
