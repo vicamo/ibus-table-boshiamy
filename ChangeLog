@@ -1,0 +1,22 @@
+commit 73707b0ee8bc43dbf09cb5a2a576f00c83d490df
+Author: You-Sheng Yang <vicamo@gmail.com>
+Date:   Mon Jul 25 22:40:43 2022 +0800
+
+    Merge pull request #1 from vicamo/for-myself/add-ci
+
+    ci: add CI based on Github Actions
+
+ .github/workflows/ci.yaml   |    87 +
+ AUTHORS.in                  |     1 +
+ COPYING                     |     5 +
+ Makefile.am                 |   156 +
+ NEWS                        |     7 +
+ README                      |    10 +
+ autogen.sh                  |     9 +
+ configure.ac                |    58 +
+ git.mk                      |   400 +
+ ibus-table-boshiamy.spec.in |    50 +
+ icons/boshiamy.png          |   Bin 0 -> 2644 bytes
+ tables/boshiamy.txt         | 34344
+ ++++++++++++++++++++++++++++++++++++++++++
+ 12 files changed, 35127 insertions(+)
