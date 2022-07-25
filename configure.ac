@@ -34,15 +34,14 @@ AM_MAINTAINER_MODE
 # AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
-# check python
-AM_PATH_PYTHON([2.6])
-
 # check for ibus-table-createdb
 PKG_CHECK_MODULES([IBUS_TABLE], [ibus-table >= 1.1.0])
 AC_ARG_VAR([IBUS_TABLE_CREATEDB],[[ibus-table-createdb, which generate db]])
 
 AC_PATH_PROG([IBUS_TABLE_CREATEDB],[ibus-table-createdb],
         [AC_MSG_ERROR([ibus-table-createdb not found.])])
+AS_IF([$IBUS_TABLE_CREATEDB --help >/dev/null 2>&1],[],
+        [AC_MSG_ERROR([Failed to execute $IBUS_TABLE_CREATEDB.])])
 
 # OUTPUT files
 AC_CONFIG_FILES(Makefile
