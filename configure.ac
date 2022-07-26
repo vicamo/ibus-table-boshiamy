@@ -22,7 +22,7 @@
 m4_define([package_name], [ibus-table-boshiamy])
 m4_define([itb_major_version], [1])
 m4_define([itb_minor_version], [6])
-m4_define([itb_micro_version], [0])
+m4_define([itb_micro_version], [1])
 
 m4_define([itb_version],
     itb_major_version.itb_minor_version.itb_micro_version)
