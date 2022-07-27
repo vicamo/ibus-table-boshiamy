@@ -4,7 +4,9 @@ Priority: optional
 Maintainer: You-Sheng Yang <vicamo@gmail.com>
 Build-Depends:
  debhelper-compat (= 12),
-Build-Depends-Indep: autotools-dev, ibus-table (>= 1.1.0), pkg-config
+Build-Depends-Indep:
+ ibus-table (>= 1.1.0),
+ pkg-config,
 Standards-Version: 4.5.0
 Homepage: http://github.com/vicamo/ibus-table-boshiamy
 Vcs-Browser: http://github.com/vicamo/ibus-table-boshiamy/tree
