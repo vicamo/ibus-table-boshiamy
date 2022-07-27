@@ -1,3 +1,14 @@
+ibus-table-boshiamy (1.6.0-1) unstable; urgency=low
+
+  [ You-Sheng Yang (vicamo) ]
+  * lintian: package-contains-upstream-installation-documentation
+  * debian: setup git-buildpackage
+  * lintian: package-uses-deprecated-debhelper-compat-version
+  * lintian: useless-autoreconf-build-depends autotools-dev
+  * ci: build debian packages
+
+ -- You-Sheng Yang <vicamo@gmail.com>  Thu, 28 Jul 2022 00:45:57 +0800
+
 ibus-table-boshiamy (1.5.9) sid; urgency=low
 
   * update autconf/automake
