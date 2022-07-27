@@ -1,0 +1,105 @@
+name: CI
+on:
+  push:
+    tags:
+      - 'debian/*'
+  pull_request:
+    branches:
+      - 'debian/*'
+
+jobs:
+  build:
+    name: 'Build package'
+    runs-on: ubuntu-latest
+    container:
+      image: 'buildpack-deps:unstable'
+      env:
+        DEBIAN_FRONTEND: noninteractive
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 'Create user'
+        run: |
+          groupadd --gid $(stat --printf=%g .) github
+          useradd --uid $(stat --printf=%u .) --gid $(stat --printf=%g .) --create-home github
+
+          chown -R github.github .
+
+      - name: 'Install build essential'
+        run: |
+          apt-get update --quiet
+          apt-get install --yes --no-install-recommends \
+              build-essential \
+              devscripts \
+              equivs \
+              git-buildpackage \
+              lintian \
+              ;
+
+      - name: 'Install package dependencies'
+        run: |
+          yes | mk-build-deps -i -r
+          rm ibus-table-boshiamy-build-deps_*
+
+      - name: 'Build source package'
+        run: |
+          PRESERVED_ENVS=$(env | grep -e '^\(GITHUB_\|RUNNER_\|DEBIAN_\|CI\)' | cut -d= -f1 | tr '\n' ',')
+          PRESERVED_ENVS=${PRESERVED_ENVS%,}
+          cat <<EOD | su --whitelist-environment=${PRESERVED_ENVS} -c /bin/bash - github
+
+          cd $(pwd)
+          set -x
+          gbp buildpackage --git-ignore-branch -us -uc -S
+          git clean -d -f -x
+
+          EOD
+
+      - name: 'Build binary package'
+        run: |
+          PRESERVED_ENVS=$(env | grep -e '^\(GITHUB_\|RUNNER_\|DEBIAN_\|CI\)' | cut -d= -f1 | tr '\n' ',')
+          PRESERVED_ENVS=${PRESERVED_ENVS%,}
+          cat <<EOD | su --whitelist-environment=${PRESERVED_ENVS} -c /bin/bash - github
+
+          cd $(pwd)
+          set -x
+          gbp buildpackage --git-ignore-branch -us -uc -b
+          git clean -d -f -x
+
+          EOD
+
+      - name: 'Collect artifacts'
+        run: |
+          ls -al ..
+          mv ../*.tar.* ../*.dsc ../*.deb ../*.changes ../*.buildinfo .
+
+      - name: 'Upload source packages'
+        uses: actions/upload-artifact@v3
+        with:
+          name: source-deb
+          path: |
+            ibus-table-boshiamy_*.debian.tar.*
+            ibus-table-boshiamy_*.dsc
+            ibus-table-boshiamy_*.orig.tar.*
+            ibus-table-boshiamy_*_source.buildinfo
+            ibus-table-boshiamy_*_source.changes
+          retention-days: 7
+
+      - name: 'Upload binary packages'
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary-deb
+          path: |
+            ibus-table-boshiamy_*_all.deb
+            ibus-table-boshiamy_*_amd64.buildinfo
+            ibus-table-boshiamy_*_amd64.changes
+          retention-days: 7
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+        with:
+          generate_release_notes: true
+          files: |
+            ibus-table-boshiamy_*
