@@ -1,0 +1,143 @@
+### Boshiamy Input Method
+###
+### Supported Encodings : Unicode4.0、BIG5、GB18030、GBK、GB
+### Source of Software  : chinesecj.com (倉頡之友‧馬來西亞)
+### Author              : Vicamo You-Sheng Yang
+###
+### File header must not be modified.
+### This file must be encoded into UTF-8.
+###
+### ChangeLogs
+### You-Sheng Yang <vicamo AT gmail DOT com> | Date: 2009-07-09
+### - Converted from scim-tables to ibus-table format.
+
+SCIM_Generic_Table_Phrase_Library_TEXT
+VERSION_1_0
+
+### Begin Table definition.
+BEGIN_DEFINITION
+
+### An unique id to distinguish this table among others.
+### Use uuidgen to generate this kind of id.
+UUID = aa920bcb-d7c1-4e3a-a1ca-5d630f1cfcb4
+
+### A unique number indicates the version of this file.
+### For example the last modified date of this file.
+### This number must be less than 2^32.
+### Just make your table version-able
+SERIAL_NUMBER = 20090709
+
+### ICON can be any format as long as your pygtk can recognized
+### the most widely ones are "png" and "svg", letter one is recommended
+ICON = boshiamy.png
+
+### The default name of this table, this is needed
+NAME = Boshiamy
+
+### The local names of this table, this is optional
+NAME.zh_CN = 嘸蝦米
+NAME.zh_HK = 嘸蝦米
+NAME.zh_TW = 嘸蝦米
+
+### Description
+DESCRIPTION = Boshiamy Input Method
+
+### Supported languages of this table
+### sigle "zh_CN" just be recognized as zh_CN,
+### but "zh_CN, zh_HK" or more zh_XX will be recognized as zh;
+### and "en_US, zh_CN" will be just ignored.
+LANGUAGES = zh_CN,zh_SG,zh_TW,zh_HK
+
+### The author of this table
+AUTHOR = Vicamo Yang <vicamo@gmail.com>
+
+### Prompt string to be displayed in the status area, CN will be replaced by
+### the gettext tools in runtime as 中.
+STATUS_PROMPT = CN
+
+### If true then the phrases' frequencies will be adjusted dynamically.
+DYNAMIC_ADJUST = TRUE
+
+### Use auto_commit mode as default
+AUTO_COMMIT = TRUE
+
+### Use full width punctuation by default
+DEF_FULL_WIDTH_PUNCT = TRUE
+
+### Not use full width letter by default
+DEF_FULL_WIDTH_LETTER = FALSE
+
+### The max number of input keys for every phrase or character.
+MAX_KEY_LENGTH = 5
+
+### Valid input chars.
+VALID_INPUT_CHARS = ,.'abcdefghijklmnopqrstuvwxyz[]
+
+### Whether support PinYin Mode, default is true.
+### this feature is just for Chinese, set it to False if your IM is not
+### Chinese.
+PINYIN_MODE = TRUE
+
+### Whether user are allow to define phrase, default is true
+### You have to define the word construction rules below.
+### For input methods which do not input phrases, set this to False
+USER_CAN_DEFINE_PHRASE = FALSE
+
+### Layout
+LAYOUT = us
+
+### Some characters whose frequencies should be fix all the time, e.g. 
+### some punctuations
+### NO_CHECK_CHARS = 
+
+### Define the prompts of each valid input char.
+###BEGIN_CHAR_PROMPTS_DEFINITION
+###a 日
+###b 月
+###c 金
+###d 木
+###e 水
+###f 火
+###g 土
+###h 竹
+###i 戈
+###j 十
+###k 大
+###l 中
+###m 一
+###n 弓
+###o 人
+###p 心
+###q 手
+###r 口
+###s 尸
+###t 廿
+###u 山
+###v 女
+###w 田
+###x 難
+###y 卜
+###z 重
+###END_CHAR_PROMPTS_DEFINITION
+
+### Rules for constructing user defined phrase
+### "ce" stands for "ci equal", a Chinese English :), means "phrase length
+### equal to", thus ce2 -> phrase length equal to 2; and "ca" means "phrase
+### length equal or above", so ca4 -> phrase length equal or above 4.
+### p21 -> the 1st key of 2nd character in the phrase, and so on.
+### Each rule separate via ";". 
+### Example below is a complete rule-set, 
+### becuase [2,2] ∩ [3,3] ∩ [4,+∞] = [2,+∞], which is the range of length
+### of phrase. This have to be satisfied if you need ibus-table to build up
+### your own inputed phrase via your daily using.
+###RULES = ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41
+
+END_DEFINITION
+
+### Begin Table data.
+### Format of every line whose formated in "input_keys\tphrase\tfreq\n" is an
+### entry.
+### From left to right, the 1st column are the input key combination that you
+### entered via keyboard; the 2nd column are presented character or phrase of
+### the key combination you want; the 3rd column are frequency of the character
+### or phrase.

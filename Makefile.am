@@ -77,11 +77,21 @@ tables_DATA = \
 
 tablesdir = $(datadir)/ibus-table/tables
 
+tables/boshiamy.txt: tables/boshiamy.txt.in tables/mapping.txt.in
+	cp tables/boshiamy.txt.in "$@"
+	echo "BEGIN_TABLE" >> "$@"
+	grep -v ^fixme tables/mapping.txt.in >> "$@"
+	echo "END_TABLE" >> "$@"
+
 EXTRA_DIST += \
-	tables/boshiamy.txt \
+	tables/boshiamy.txt.in \
+	tables/mapping.txt.in \
 	$(NULL)
 
-CLEANFILES += $(tables_DATA)
+CLEANFILES += \
+	$(tables_DATA) \
+	tables/boshiamy.txt
+	$(NULL)
 
 .txt.db:
 	@$(MKDIR_P) "$(@D)"
