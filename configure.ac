@@ -42,6 +42,7 @@ AC_PATH_PROG([IBUS_TABLE_CREATEDB],[ibus-table-createdb],
         [AC_MSG_ERROR([ibus-table-createdb not found.])])
 AS_IF([$IBUS_TABLE_CREATEDB --help >/dev/null 2>&1],[],
         [AC_MSG_ERROR([Failed to execute $IBUS_TABLE_CREATEDB.])])
+AC_PREFIX_DEFAULT([/usr])
 
 # OUTPUT files
 AC_CONFIG_FILES(Makefile
